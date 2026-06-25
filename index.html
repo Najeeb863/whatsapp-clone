@@ -3,7 +3,7 @@ WhatsApp Web Clone
   
   
   
-  
+
   
   
 Me  
@@ -59,11 +59,11 @@ messageInput.value = "";
 }
 
 sendBtn.addEventListener('click', sendMessage);  
-messageInput.addEventListener('keypress', (e) => {  
+messageInput.addEventListener('keypress', function(e) {  
 if (e.key === 'Enter') sendMessage();  
 });
 
-socket.on('receive\_message', (data) => {  
+socket.on('receive\_message', function(data) {  
 const msgDiv = document.createElement('div');  
 msgDiv.classList.add('message');
 
@@ -73,7 +73,21 @@ msgDiv.classList.add('sent');
 msgDiv.classList.add('received');  
 }
 
-msgDiv.innerHTML = `<span class="sender-name">${data.sender}</span> <p>${data.text}</p> <span class="time">${data.time}</span>`;  
+const nameSpan = document.createElement('span');  
+nameSpan.classList.add('sender-name');  
+nameSpan.innerText = data.sender;
+
+const textP = document.createElement('p');  
+textP.innerText = data.text;
+
+const timeSpan = document.createElement('span');  
+timeSpan.classList.add('time');  
+timeSpan.innerText = data.time;
+
+msgDiv.appendChild(nameSpan);  
+msgDiv.appendChild(textP);  
+msgDiv.appendChild(timeSpan);
+
 messageArea.appendChild(msgDiv);  
 messageArea.scrollTop = messageArea.scrollHeight;  
 });
