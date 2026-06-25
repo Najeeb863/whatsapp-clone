@@ -1,0 +1,79 @@
+WhatsApp Web Clone  
+  
+  
+  
+  
+  
+  
+  
+Me  
+💬   ┇  
+  
+  
+  
+  
+  
+  
+Group  
+  
+Main Chat Group  
+Sab log yahan chat karein...  
+  
+  
+  
+
+  
+  
+Group  
+  
+Main Chat Group  
+online  
+  
+
+  
+😀  
+  
+➤  
+  
+  
+
+  
+const socket = io();  
+const messageArea = document.getElementById('messageArea');  
+const messageInput = document.getElementById('messageInput');  
+const sendBtn = document.getElementById('sendBtn');
+
+const username = "User\_" + Math.floor(Math.random() \* 1000);
+
+function sendMessage() {  
+const text = messageInput.value.trim();  
+if (text !== "") {  
+const messageData = {  
+sender: username,  
+text: text,  
+time: new Date().toLocaleTimeString(\[\], {hour: '2-digit', minute:'2-digit'})  
+};  
+socket.emit('send\_message', messageData);  
+messageInput.value = "";  
+}  
+}
+
+sendBtn.addEventListener('click', sendMessage);  
+messageInput.addEventListener('keypress', (e) => {  
+if (e.key === 'Enter') sendMessage();  
+});
+
+socket.on('receive\_message', (data) => {  
+const msgDiv = document.createElement('div');  
+msgDiv.classList.add('message');
+
+if (data.sender === username) {  
+msgDiv.classList.add('sent');  
+} else {  
+msgDiv.classList.add('received');  
+}
+
+msgDiv.innerHTML = `<span class="sender-name">${data.sender}</span> <p>${data.text}</p> <span class="time">${data.time}</span>`;  
+messageArea.appendChild(msgDiv);  
+messageArea.scrollTop = messageArea.scrollHeight;  
+});
